@@ -3,50 +3,42 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { supabase } from '../lib/db'; 
 import FeedCard from '../components/FeedCard';
-import FilterBar from '../components/FilterBar'; // <--- Import the new component
+import FilterBar from '../components/FilterBar'; 
+import Navbar from '../components/Navbar'; // <--- Imported here
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // New State for Filters
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('All');
 
-  // 1. Fetch Data whenever Search or Category changes
   useEffect(() => {
     fetchRestaurants();
-  }, [searchQuery, category]); // <--- Dependency Array: Re-run when these change
+  }, [searchQuery, category]);
 
   async function fetchRestaurants() {
     setLoading(true);
-    
-    // Start the query
     let query = supabase
       .from('restaurants')
       .select('*')
       .order('id', { ascending: true });
 
-    // Apply Filter: If category is NOT "All", filter by cuisine
     if (category !== 'All') {
       query = query.eq('cuisine', category);
     }
 
-    // Apply Search: If user typed something, look for it in the name
     if (searchQuery) {
-      query = query.ilike('name', `%${searchQuery}%`); // % means "anything before or after"
+      query = query.ilike('name', `%${searchQuery}%`);
     }
 
     const { data, error } = await query;
-    
     if (error) console.log('Error fetching:', error);
     else setRestaurants(data);
-    
     setLoading(false);
   }
 
   const handleInteraction = async (id, type) => {
-    // (This part is the same as before)
     const currentRestaurant = restaurants.find(r => r.id === id);
     let updates = {};
 
@@ -68,12 +60,8 @@ export default function Home() {
         <title>JMT - Real Food</title>
       </Head>
 
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-white pt-4 px-4 pb-2">
-        <h1 className="text-2xl font-bold text-orange-600 tracking-tighter">
-          JMT <span className="text-xs text-gray-500 font-normal ml-1">존맛탱</span>
-        </h1>
-      </div>
+      {/* FIXED: We used the component instead of the old div */}
+      <Navbar />
 
       {/* New Filter Bar */}
       <FilterBar 
