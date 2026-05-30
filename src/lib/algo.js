@@ -1,6 +1,4 @@
-// src/lib/algo.js
 export function calculateNetLikes(restaurant) {
-  // Formula: (Likes + Double Likes) - Dislikes
   return (restaurant.likes + restaurant.double_likes) - restaurant.dislikes;
 }
 

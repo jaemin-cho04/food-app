@@ -1,40 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# JMT (존맛탱)
+
+A mobile-first food discovery app for finding and rating restaurants in Seoul. Browse the feed, filter by cuisine, and vote on spots with a like/love/dislike system.
+
+## Stack
+
+- **Next.js** (Pages Router)
+- **Supabase** — database + magic link auth
+- **Tailwind CSS**
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repo and install dependencies:
+
+```bash
+npm install
+```
+
+2. Create a `.env.local` file based on `.env.example` and fill in your Supabase credentials:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Supabase Schema
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+The app expects a `restaurants` table with the following columns:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+| Column         | Type    | Description                     |
+|----------------|---------|---------------------------------|
+| id             | int     | Primary key                     |
+| name           | text    | Restaurant name                 |
+| cuisine        | text    | e.g. Korean, Italian, Cafe      |
+| district       | text    | Neighborhood in Seoul           |
+| image          | text    | Image URL                       |
+| queue          | int     | Current wait time in minutes    |
+| likes          | int     | Like count                      |
+| double_likes   | int     | Love count                      |
+| dislikes       | int     | Dislike count                   |
+| visits         | int     | Total visit count               |
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+```
+src/
+  components/
+    FeedCard.js      # Restaurant card with vote buttons
+    FilterBar.js     # Search input + cuisine filter chips
+    Navbar.js        # Top nav with logo and profile link
+  lib/
+    db.js            # Supabase client
+    algo.js          # Net likes formula, wait time formatter
+  pages/
+    index.js         # Main feed
+    login.js         # Magic link login
+    profile.js       # User profile + sign out
+    restaurant/
+      [id].js        # Restaurant detail page
+```

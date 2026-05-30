@@ -1,15 +1,13 @@
-// src/pages/index.js
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { supabase } from '../lib/db'; 
+import { supabase } from '../lib/db';
 import FeedCard from '../components/FeedCard';
-import FilterBar from '../components/FilterBar'; 
-import Navbar from '../components/Navbar'; // <--- Imported here
+import FilterBar from '../components/FilterBar';
+import Navbar from '../components/Navbar';
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
-  
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('All');
 
@@ -60,17 +58,14 @@ export default function Home() {
         <title>JMT - Real Food</title>
       </Head>
 
-      {/* FIXED: We used the component instead of the old div */}
       <Navbar />
 
-      {/* New Filter Bar */}
-      <FilterBar 
-        onSearch={setSearchQuery} 
+      <FilterBar
+        onSearch={setSearchQuery}
         onCategoryChange={setCategory}
         activeCategory={category}
       />
 
-      {/* Feed */}
       <main className="max-w-md mx-auto p-4 pt-0">
         {loading ? (
           <div className="text-center py-10 text-gray-400">Finding food...</div>
@@ -78,10 +73,10 @@ export default function Home() {
           <div className="text-center py-10 text-gray-400">No restaurants found! 🍜</div>
         ) : (
           restaurants.map(r => (
-            <FeedCard 
-              key={r.id} 
-              restaurant={r} 
-              onInteract={handleInteraction} 
+            <FeedCard
+              key={r.id}
+              restaurant={r}
+              onInteract={handleInteraction}
             />
           ))
         )}

@@ -1,4 +1,3 @@
-// src/pages/login.js
 import { useState } from 'react';
 import { supabase } from '../lib/db';
 
@@ -10,8 +9,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    // 1. Ask Supabase to send a magic link
+
     const { error } = await supabase.auth.signInWithOtp({ email });
 
     if (error) {
@@ -54,9 +52,9 @@ export default function Login() {
             </button>
           </form>
         )}
-        
+
         <div className="mt-6 text-center">
-            <a href="/" className="text-sm text-gray-400 hover:text-gray-600">Back to Home</a>
+          <a href="/" className="text-sm text-gray-400 hover:text-gray-600">Back to Home</a>
         </div>
       </div>
     </div>
